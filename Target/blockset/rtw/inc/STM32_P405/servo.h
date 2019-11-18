@@ -1,0 +1,67 @@
+/************************************************************************************//**
+* \file         servo.h
+* \brief        Servo driver header file.
+* \internal
+*----------------------------------------------------------------------------------------
+*                          C O P Y R I G H T
+*----------------------------------------------------------------------------------------
+*  Copyright 2019 (c)  by HAN Automotive   http://www.han.nl        All rights reserved
+*
+*----------------------------------------------------------------------------------------
+*                            L I C E N S E
+*----------------------------------------------------------------------------------------
+* Permission is hereby granted, free of charge, to any person obtaining a copy of this 
+* software and associated documentation files (the "Software"), to deal in the Software
+* without restriction, including without limitation the rights to use, copy, modify, merge,
+* publish, distribute, sublicense, and/or sell copies of the Software, and to permit
+* persons to whom the Software is furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in all copies or
+* substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+* INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+* PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+* FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+* OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+* DEALINGS IN THE SOFTWARE.
+* \endinternal
+****************************************************************************************/
+
+#ifndef SERVO_H_
+#define SERVO_H_
+
+/****************************************************************************************
+Include files
+****************************************************************************************/
+#include <stdint.h>                                   /* ANSI C types                  */
+
+
+/****************************************************************************************
+* Macro definitions
+****************************************************************************************/
+#define SERVO_TIM1_PIN_PA8    (0)                         /* PA-8   (Ch. 1)          */
+#define SERVO_TIM1_PIN_PA9    (1)                         /* UEXT-3 (Ch. 2)          */
+#define SERVO_TIM1_PIN_PA10   (2)                         /* UEXT-4 (Ch. 3)          */
+#define SERVO_TIM2_PIN_PA1    (3)                         /* PA-1   (Ch. 2)          */
+#define SERVO_TIM3_PIN_PC6    (4)                         /* PC-6   (Ch. 1)          */
+#define SERVO_TIM3_PIN_PC7    (5)                         /* PC-7   (Ch. 2)          */
+#define SERVO_TIM3_PIN_PC8    (6)                         /* PC-8   (Ch. 3)          */
+#define SERVO_TIM3_PIN_PC9    (7)                         /* PC-9   (Ch. 4)          */
+#define SERVO_TIM4_PIN_PB6    (8)                         /* UEXT-5 (Ch. 1)          */
+#define SERVO_TIM4_PIN_PB7    (9)                         /* UEXT-6 (Ch. 2)          */
+#define SERVO_TIM4_PIN_PB8    (10)                        /* PB-8   (Ch. 3) - CANRX  */
+#define SERVO_TIM4_PIN_PB9    (11)                        /* PB-9   (Ch. 4) - CANTX  */
+
+/****************************************************************************************
+* Type definitions
+****************************************************************************************/
+
+/****************************************************************************************
+* Function prototypes
+****************************************************************************************/
+void ServoInit(const uint8_t pinID, const uint16_t min_pulse_width_in_us, const uint16_t max_pulse_width_in_us);
+void ServoUpdate(const uint8_t pinID, uint16_t pulse_width_in_us);
+
+#endif /* SERVO_H_ */
+/********************************* end of servo.h *************************************/
