@@ -26,10 +26,11 @@
 %% OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 %% DEALINGS IN THE SOFTWARE.
 %%
-%%***************************************************************************************%% Change the version in the HANcoder struct to the next version
+%%***************************************************************************************
+%% Change the version in the HANcoder struct to the next version
 function [] = UpdateModelToNewVersion()
 HANcoderBlocks = find_system(bdroot,'IncludeCommented','on','RegExp', 'on', 'LookUnderMasks', 'All', 'Tag', 'HANcoder_TARGET_.');
-newVersion = '1.1';
+newVersion = '1.2';
 showWarning = 0;
 
 for index=1:1:length(HANcoderBlocks)

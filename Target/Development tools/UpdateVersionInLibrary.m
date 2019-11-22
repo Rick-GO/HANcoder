@@ -31,14 +31,14 @@
 HANcoderBlocks = find_system(gcs,'RegExp', 'on', 'LookUnderMasks', 'All', 'Tag', 'HANcoder_TARGET_.');
 for index=1:1:length(HANcoderBlocks)
     HANcoderStruct = get_param(HANcoderBlocks{index},'UserData');
-    HANcoderStruct.BlocksetVersion = '1.1';
+    HANcoderStruct.BlocksetVersion = '1.2';
     set_param(HANcoderBlocks{index}, 'UserData', HANcoderStruct);
 end
 
 % Change the descriptions in the Base Sample Time blocks (Run Separate for each target!)
 BaseSampleTimeConfigBlocks = find_system(gcs, 'MaskType', 'Base Sample Time config');
 for BSTindex=1:1:length(BaseSampleTimeConfigBlocks)
-    set_param(BaseSampleTimeConfigBlocks{BSTindex},'Description', 'HANcoder Target STM32-Olimexino blockset version 1.0'); %Don't forget to change the version here aswell!
+    set_param(BaseSampleTimeConfigBlocks{BSTindex},'Description', 'HANcoder Target STM32-Olimexino blockset version 1.2'); %Don't forget to change the version here aswell!
 end
 % !! NOTE!! Version must also be updated in the hookfile & the version of the library itself should match the blockset version <-----
 % (name:HANcoderVersion)

@@ -630,7 +630,7 @@ end %end of function CheckHANcoderTargetBlocksetMixing()
 function BlocksFound = CheckHANcoderBlocksetVersion(modelName)
 %% Check the version in the model
 % Version must be updated in this script!
-HANcoderVersion = '1.1';
+HANcoderVersion = '1.2';
 BlocksFound = 0;
 try
 HANcoderBlocks = find_system(modelName,'RegExp', 'on', 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'Tag', 'HANcoder_TARGET_.');
