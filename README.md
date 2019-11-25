@@ -5,7 +5,7 @@
 HANcoder STM32 Target is part of the open model based development (openMBD)
 suite created by HAN Automotive Research.
 
-HANcoder is a family of real-time code generation targets for MATLAB Simulink<sup>&reg;</sup>.
+HANcoder is a family of real-time code generation targets for MATLAB Simulink(R).
 HANcoder supports both automotive grade series production controllers as well
 as some low-cost development boards. The support for low-cost controllers as
 well as production grade controllers provide users a unique possibility to
@@ -15,10 +15,10 @@ effort, thanks to the compatible HANcoder libraries for supported controllers.
 
 HANcoder STM32 Target supports three low-cost STM32 based boards from Olimex.
 
-Targets from HANcoder represent itself as a library in Simulink<sup>&reg;</sup>. By using
-blocks from this library, the user can connect a MATLAB Simulink<sup>&reg;</sup> model to
+Targets from HANcoder represent itself as a library in Simulink(R). By using
+blocks from this library, the user can connect a MATLAB Simulink(R) model to
 inputs and outputs of the controller. The inputs and outputs are represented by
-dedicated Simulink<sup>&reg;</sup> blocks. The behavior of the inputs and outputs can be
+dedicated Simulink(R) blocks. The behavior of the inputs and outputs can be
 changed by adapting the appropriate block parameters. System configuration
 can also be easily performed by system configuration blocks.
 
@@ -86,14 +86,14 @@ http://openmbd.com/wiki/HANcoder
 http://openmbd.com/wiki/HANcoder/STM32/Installation_Manual
 
 **Quick guide**
-HANcoder STM32 Target comes with a MATLAB Simulink<sup>&reg;</sup> template model for each 
+HANcoder STM32 Target comes with a MATLAB Simulink(R) template model for each 
 supported STM32 board.
 
 1. Place the complete HANcoder STM32 Target directory in a desired location on
    your computer.
 
-2. Open the template model in MATLAB Simulink<sup>&reg;</sup> by double clicking the 
-   appropriate .slx file for the board of your choice, assuming MATLAB Simulink<sup>&reg;</sup>
+2. Open the template model in MATLAB Simulink(R) by double clicking the 
+   appropriate .slx file for the board of your choice, assuming MATLAB Simulink(R)
    is installed:
    -  HANcoder_Olimexino.slx for the Olimexino-STM32 board
    -  HANcoder_E407.slx for the Olimex STM32-E407 board
