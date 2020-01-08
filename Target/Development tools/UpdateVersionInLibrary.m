@@ -40,7 +40,10 @@ BaseSampleTimeConfigBlocks = find_system(gcs, 'MaskType', 'Base Sample Time conf
 for BSTindex=1:1:length(BaseSampleTimeConfigBlocks)
     set_param(BaseSampleTimeConfigBlocks{BSTindex},'Description', 'HANcoder Target STM32-Olimexino blockset version 1.2'); %Don't forget to change the version here aswell!
 end
-% !! NOTE!! Version must also be updated in the hookfile & the version of the library itself should match the blockset version <-----
+% !! NOTE !! Version must also be updated in:
+% - The hookfile
+% - The library name (in slblocks.m)
+%   The version of the library itself should match the blockset version <-----
 % (name:HANcoderVersion)
 
 % For new library blocks the Forwarding Table can be used. This way you can run scripts to change the blocks in the model.

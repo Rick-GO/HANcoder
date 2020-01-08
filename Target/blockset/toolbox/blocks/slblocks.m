@@ -58,7 +58,7 @@ Browser(1).Library = 'HANcoder_STM32_Target2009b';
 else
 Browser(1).Library = 'HANcoder_STM32_Target';
 end
-Browser(1).Name    = 'HANcoder STM32 Target';
+Browser(1).Name    = 'HANcoder STM32 Target v1.2';
 Browser(1).IsFlat  = 0;
 
 blkStruct.Browser = Browser;
