@@ -63,6 +63,10 @@
     %%
     %% Make the data transmission block (with possible byte swap)
     {
+	uint32_t CANidentifier_hancoder = %<LibBlockInputSignal(0, "", "", 0)>;
+	if(%<block.RTWdata.RTR>)
+		CANidentifier_hancoder |= CAN_RTR_FRAME_MASK;
+		
     /* prepare the data */
     %foreach counter = block.RTWdata.inputNumber
         canTxData.%<LibGetDataTypeNameFromId(dataTypeNumber)>_info[%<counter>] = %<LibBlockInputSignal(counter + 1, "", "", 0)>;
@@ -77,10 +81,10 @@
 	  %% switch between Standard frame and Extended frame.
 	  %switch(%<block.RTWdata.frameType>)
 		%case 1
-    CanTransmit(%<block.RTWdata.canBus>, %<LibBlockInputSignal(0, "", "", 0)>, %<block.RTWdata.dataLength>, &canTxData.uint8_T_info[0]);
+    CanTransmit(%<block.RTWdata.canBus>, CANidentifier_hancoder, %<block.RTWdata.dataLength>, &canTxData.uint8_T_info[0]);
 		%break
 		%case 2
-    CanTransmit(%<block.RTWdata.canBus>, %<LibBlockInputSignal(0, "", "", 0)> | CAN_EXTID_MASK, %<block.RTWdata.dataLength>, &canTxData.uint8_T_info[0]);
+    CanTransmit(%<block.RTWdata.canBus>, CANidentifier_hancoder | CAN_EXTID_MASK, %<block.RTWdata.dataLength>, &canTxData.uint8_T_info[0]);
 		%break
 	  %endswitch
 	}

@@ -66,7 +66,7 @@ function setup(block)
   
   % Number of S-Function parameters expected
   % (tsamp, canBus, frameType, inputNumber, dataType, byteOrder)
-  block.NumDialogPrms     = 6;
+  block.NumDialogPrms     = 7;
   
   block.SampleTimes = [block.DialogPrm(1).Data 0];
   %% -----------------------------------------------------------------

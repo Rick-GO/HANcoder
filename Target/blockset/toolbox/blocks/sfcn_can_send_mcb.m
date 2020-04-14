@@ -27,7 +27,7 @@
 %% DEALINGS IN THE SOFTWARE.
 %%
 %%***************************************************************************************
-function [] = sfcn_can_send_mcb(canBus, frameType, inputNumber, dataType, byteOrder)
+function [] = sfcn_can_send_mcb(canBus, frameType, inputNumber, dataType, byteOrder, RTR)
 
 %Our data type parameters:
 % int8
@@ -125,7 +125,7 @@ end
 % Create resource keywords to be reserved in resource database
 modelRTWFields = struct('canBus', int2str(canBus-1), 'frameType', int2str(frameType),...
     'inputNumber', int2str(inputNumber), 'dataType', int2str(dataType), 'byteOrder', int2str(byteOrder),...
-    'dataLength', int2str(dataLength));
+    'dataLength', int2str(dataLength), 'RTR', int2str(RTR));
 
 % Insert modelRTWFields in the I/O block S-Function containing the Tag starting with 'HANcoder_TARGET_'
 HANcoder_TARGET_DataBlock = find_system(gcb, 'RegExp', 'on', 'FollowLinks', 'on', 'LookUnderMasks', 'all', 'BlockType', 'M-S-Function');
