@@ -131,7 +131,7 @@ static void XcpUartSend(uint8_t *data);
 static uint8_t dataToSend[120] = {0};
 static uint8_t xcpTransmissionBus = 0;
 
-#if defined(XCPE407) || defined(XCPOLIMEXINO || defined(XCPOLIMEXINOF3)
+#if defined(XCPE407) || defined(XCPOLIMEXINO) || defined(XCPOLIMEXINOF3)
 static uint8_t xcpUartChannel;
 #endif
 
@@ -177,7 +177,7 @@ static void XcpUsbSend(uint8_t *data)
   if(dataToSend[0] != 0)
   {
     /*Target specific function */
-    #if defined(XCPE407) || defined(XCPP405) || defined(XCPOLIMEXINO || defined(XCPOLIMEXINOF3)
+    #if defined(XCPE407) || defined(XCPP405) || defined(XCPOLIMEXINO) || defined(XCPOLIMEXINOF3)
     UsbComTransmit(&data[0],(data[0]+2)); // For serial communication 2 are added for Length and checksum
     #endif
   }
@@ -226,7 +226,7 @@ void XcpCanSend(uint8_t *data)
   if(dataToSend[0] != 0)
   {
     /*Target specific function */
-    #if defined(XCPE407) || defined(XCPP405) || defined(XCPOLIMEXINO || defined(XCPOLIMEXINOF3)
+    #if defined(XCPE407) || defined(XCPP405) || defined(XCPOLIMEXINO) || defined(XCPOLIMEXINOF3)
     CanTransmit(xcpCanParameters.xcpMacCanChannel, xcpCanParameters.xcpDtoId , data[0], &data[1]); 
     #endif
   }
@@ -241,7 +241,7 @@ void XcpCanSend(uint8_t *data)
 ****************************************************************************************/
 void XcpUartConfigureParamaters(uint8_t channel)
 {
-#if defined(XCPE407) || defined(XCPOLIMEXINO || defined(XCPOLIMEXINOF3)
+#if defined(XCPE407) || defined(XCPOLIMEXINO) || defined(XCPOLIMEXINOF3)
     
   xcpUartChannel = channel;
   xcpTransmissionBus = XCPUART; // Set UART as active communication bus
@@ -277,7 +277,7 @@ void XcpUartConfigureParamaters(uint8_t channel)
 ****************************************************************************************/
 void XcpUartReceive(void)
 {
-#if defined(XCPE407) || defined(XCPOLIMEXINO || defined(XCPOLIMEXINOF3)
+#if defined(XCPE407) || defined(XCPOLIMEXINO) || defined(XCPOLIMEXINOF3)
     
   static uint8_t length = 0;
 
@@ -327,7 +327,7 @@ void XcpUartReceive(void)
 ****************************************************************************************/
 static void XcpUartSend(uint8_t *data)
 {
-#if defined(XCPE407) || defined(XCPOLIMEXINO || defined(XCPOLIMEXINOF3)
+#if defined(XCPE407) || defined(XCPOLIMEXINO) || defined(XCPOLIMEXINOF3)
     
   if(dataToSend[0] != 0)
   {
