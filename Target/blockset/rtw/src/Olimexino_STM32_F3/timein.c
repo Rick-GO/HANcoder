@@ -319,10 +319,10 @@ void TimeinConfigure(uint8_t pin_id)
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_Init(pinMapping[pin_id].port, &GPIO_InitStructure);
   /* map port pins to timer module. note that this must be done after GPIO init */
-  if (moduleMapping[pinMapping[pin_id].module_idx].timer_remap_cfg != 0)
-  {
-    GPIO_PinRemapConfig(moduleMapping[pinMapping[pin_id].module_idx].timer_remap_cfg, ENABLE);
-  }
+  //if (moduleMapping[pinMapping[pin_id].module_idx].timer_remap_cfg != 0)
+  //{
+  //  GPIO_PinRemapConfig(moduleMapping[pinMapping[pin_id].module_idx].timer_remap_cfg, ENABLE);
+  //}
   /* configure the input capture channel */
   TIM_ICInitStructure.TIM_ICPolarity = TIM_ICPolarity_Rising;
   TIM_ICInitStructure.TIM_ICSelection = TIM_ICSelection_DirectTI;

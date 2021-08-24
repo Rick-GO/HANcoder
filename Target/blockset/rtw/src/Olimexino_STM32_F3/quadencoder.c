@@ -136,10 +136,10 @@ void QuadEncConfigure(uint8_t id, tQuadEncCfg config)
   gpio_init.GPIO_Pin = timerMapping[id].timer_ch2_pin;
   GPIO_Init(timerMapping[id].timer_ch2_port, &gpio_init);
   /* map port pins to timer module */
-  if (timerMapping[id].timer_remap_cfg != 0)
-  {
-    GPIO_PinRemapConfig(timerMapping[id].timer_remap_cfg, ENABLE);
-  }
+  //if (timerMapping[id].timer_remap_cfg != 0)
+  //{
+  //  GPIO_PinRemapConfig(timerMapping[id].timer_remap_cfg, ENABLE);
+  //}
   /* turn on the timer clock */
   if (timerMapping[id].timer_apb_number == 1)
   {
