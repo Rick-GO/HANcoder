@@ -56,9 +56,12 @@ end % end of function FlashSTM32Target()
 function FlashViaMicroBoot(modelName,Interface)
 ModelPath= strcat(' "',pwd, '\..\',bdroot(modelName),'.srec"');
 MircoBootPath = strcat('"',pwd,'\..\..\Host\MicroBoot\MicroBoot.exe"');
+CubeProgrammerPath = strcat('"',pwd,'\..\..\Host\CubeProgrammer\STM32_Programmer_CLI.exe"');
 switch Interface
     case 'USB'
         cmdCommand = strcat(MircoBootPath, ' -iopenblt_usb.dll ', ModelPath, ' &');
+	case 'USB-F3'
+		cmdCommand = strcat(CubeProgrammerPath, ' -c port=usb1 -e all -w ', ModelPath, ' --go 0x08000000');
     case 'CAN'
         cmdCommand = strcat(MircoBootPath, ' -iopenblt_can_peak.dll ', ModelPath, ' &');
     case 'Ethernet'
