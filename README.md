@@ -96,6 +96,7 @@ supported STM32 board.
    appropriate .slx file for the board of your choice, assuming MATLAB Simulink(R)
    is installed:
    -  HANcoder_Olimexino.slx for the Olimexino-STM32 board
+   -  HANcoder_Olimexino_F3.slx for the Olimexino-STM32-F3 board
    -  HANcoder_E407.slx for the Olimex STM32-E407 board
    -  HANcoder_P405.slx for the Olimex STM32-P405 board
    
@@ -103,7 +104,7 @@ supported STM32 board.
    in MATLAB is the folder that contains the Simulink model to build.
 
 4. Flash the generated s-record file in the STM32 board.
-   Two options are supported:
+   Three options are supported:
 
     a. Using an ST-Link/V2
        Purchase an ST-LINK/V2 programmer and download the PC application for
@@ -115,8 +116,12 @@ supported STM32 board.
        http://openmbd.com/wiki/Downloads/HANcoder#OpenBLT_binaries_.2804-11-2019.29
        Installation and usage of the binaries is described on openMBD.com:
        http://openmbd.com/wiki/HANcoder/STM32/Installation_Manual
-       
-     
+	   
+    c. STM32CubeProgrammer can be used to program the **Olimexino-STM32-F3 board**.
+	   The programmer can be downloaded as a complete package st.com:
+	   https://www.st.com/en/development-tools/stm32cubeprog.html
+	   Installation and usage of the binaries is described on openMBD.com:
+	
 **Contact**
   
 For more information contact jan.benders@han.nl
