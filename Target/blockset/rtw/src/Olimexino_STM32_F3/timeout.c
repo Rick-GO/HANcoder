@@ -73,7 +73,7 @@ typedef struct
 /**< \brief Structure type with pin mapping information. */
 typedef struct
 {
-  uint8_t peripheral_clk;
+  uint32_t peripheral_clk;
   GPIO_TypeDef* port;
   uint16_t pin;
   uint8_t module_idx;
