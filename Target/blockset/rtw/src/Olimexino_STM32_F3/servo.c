@@ -113,9 +113,9 @@ typedef struct
 const static tpinMapping pinMapping[] =
 {
 	
-	{TIM1, 0, GPIOA, GPIO_Pin_8,  RCC_AHBPeriph_GPIOA, GPIO_AF_12, GPIO_PinSource8, RCC_APB2Periph_TIM1},
-	{TIM1, 1, GPIOA, GPIO_Pin_9,  RCC_AHBPeriph_GPIOA, GPIO_AF_12, GPIO_PinSource9, RCC_APB2Periph_TIM1},
-	{TIM1, 2, GPIOA, GPIO_Pin_10, RCC_AHBPeriph_GPIOA, GPIO_AF_12, GPIO_PinSource10,RCC_APB2Periph_TIM1},
+	{TIM1, 0, GPIOA, GPIO_Pin_8,  RCC_AHBPeriph_GPIOA, GPIO_AF_6, GPIO_PinSource8, RCC_APB2Periph_TIM1},
+	{TIM1, 1, GPIOA, GPIO_Pin_9,  RCC_AHBPeriph_GPIOA, GPIO_AF_6, GPIO_PinSource9, RCC_APB2Periph_TIM1},
+	{TIM1, 2, GPIOA, GPIO_Pin_10, RCC_AHBPeriph_GPIOA, GPIO_AF_6,  GPIO_PinSource10,RCC_APB2Periph_TIM1},  // Changed, alternate function = 6: Orignal code: {TIM1, 2, GPIOA, GPIO_Pin_10, RCC_AHBPeriph_GPIOA, GPIO_AF_12, GPIO_PinSource10,RCC_APB2Periph_TIM1},
 	{TIM2, 0, GPIOA, GPIO_Pin_0,  RCC_AHBPeriph_GPIOA, GPIO_AF_1, GPIO_PinSource0, RCC_APB1Periph_TIM2},
 	{TIM2, 1, GPIOA, GPIO_Pin_1,  RCC_AHBPeriph_GPIOA, GPIO_AF_1, GPIO_PinSource1, RCC_APB1Periph_TIM2},
 	{TIM2, 3, GPIOA, GPIO_Pin_3,  RCC_AHBPeriph_GPIOA, GPIO_AF_1, GPIO_PinSource3, RCC_APB1Periph_TIM2},
@@ -132,19 +132,19 @@ const static tpinMapping pinMapping[] =
 * Local data declarations
 ****************************************************************************************/
 /** \brief Array with all minimum pulse widths for each servo module. */
-static uint16_t m_min_pulse_width_in_us[12] =
+static uint16_t m_min_pulse_width_in_us[13] =			// Changed (arraysize was 12)
 {
 	1000,1000,1000,1000,
 	1000,1000,1000,1000,
-	1000,1000,1000,1000
+	1000,1000,1000,1000, 1000							// Changed (added one element to array)
 };
 
 /** \brief Array with all maximum pulse widths for each servo module. */
-static uint16_t m_max_pulse_width_in_us[12] =
+static uint16_t m_max_pulse_width_in_us[13] =			// Changed (arraysize was 12)
 {
 	2000,2000,2000,2000,
 	2000,2000,2000,2000,
-	2000,2000,2000,2000
+	2000,2000,2000,2000, 2000							// Changed (added one element to array)
 };
 
 /************************************************************************************//**
@@ -275,7 +275,7 @@ void ServoUpdate(const uint8_t pin_id, uint16_t pulse_width_in_us)
 	}
 	else if(pinMapping[pin_id].channel == 3)
 	{
-	pinMapping[pin_id].tim->CCR3 = pulse_width_in_us;
+	pinMapping[pin_id].tim->CCR4 = pulse_width_in_us;		// Changed (CCR3 by CCR4)
 	}
 
 }
