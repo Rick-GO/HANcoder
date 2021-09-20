@@ -108,10 +108,10 @@ const static tPwmoutModuleMapping moduleMapping[] =
 /** \brief Array with all configuration parameters of a pwm output pin. */
 const static tPwmoutPinMapping pinMapping[] =
 {
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_8,  PWMOUT_MODULE_TIM1, 0,GPIO_AF_12, GPIO_PinSource8 }, /* idx 0:  PWMOUT_TIM1_PIN_PA8   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_9,  PWMOUT_MODULE_TIM1, 1,GPIO_AF_12, GPIO_PinSource9 }, /* idx 1:  PWMOUT_TIM1_PIN_PA9   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_10, PWMOUT_MODULE_TIM1, 2,GPIO_AF_12, GPIO_PinSource10 }, /* idx 2:  PWMOUT_TIM1_PIN_PA10  */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_11, PWMOUT_MODULE_TIM1, 3,GPIO_AF_12, GPIO_PinSource11 }, /* idx 3:  PWMOUT_TIM1_PIN_PA11  */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_8,  PWMOUT_MODULE_TIM1, 0,GPIO_AF_6, GPIO_PinSource8 }, /* idx 0:  PWMOUT_TIM1_PIN_PA8   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_9,  PWMOUT_MODULE_TIM1, 1,GPIO_AF_6, GPIO_PinSource9 }, /* idx 1:  PWMOUT_TIM1_PIN_PA9   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_10, PWMOUT_MODULE_TIM1, 2,GPIO_AF_6, GPIO_PinSource10 }, /* idx 2:  PWMOUT_TIM1_PIN_PA10  */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_11, PWMOUT_MODULE_TIM1, 3,GPIO_AF_11, GPIO_PinSource11 }, /* idx 3:  PWMOUT_TIM1_PIN_PA11  */
   { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_0,  PWMOUT_MODULE_TIM2, 0,GPIO_AF_1, GPIO_PinSource0 }, /* idx 4:  PWMOUT_TIM2_PIN_PA0   */
   { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_1,  PWMOUT_MODULE_TIM2, 1,GPIO_AF_1, GPIO_PinSource1 }, /* idx 5:  PWMOUT_TIM2_PIN_PA1   */
   { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_2,  PWMOUT_MODULE_TIM2, 2,GPIO_AF_1, GPIO_PinSource2 }, /* idx 6:  PWMOUT_TIM2_PIN_PA2   */
@@ -255,8 +255,7 @@ void PwmoutConfigure(uint8_t pin_id, tPwmoutPolarityCfg polarity, tPwmoutInverte
   /* initialize the pin */
   GPIO_Init(pinMapping[pin_id].port, &gpio_init);
   
-//  GPIO_PinAFConfig(pinMapping[pin_id].port, pinMapping[pin_id].pin_source, GPIO_AF_2);
-//  GPIO_PinAFConfig(pinMapping[pin_id].port, pinMapping[pin_id].pin_source, pinMapping[pin_id].gpio_af);
+  GPIO_PinAFConfig(pinMapping[pin_id].port, pinMapping[pin_id].pin_source, pinMapping[pin_id].gpio_af);
   
   /* initialize the pin for the additional inverted signal */
   if ( (inverted_output == PWMOUT_INVERTED_OUTPUT_ON) &&
