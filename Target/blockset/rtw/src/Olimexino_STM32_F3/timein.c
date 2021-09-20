@@ -897,23 +897,6 @@ void Timein3Interrupt(void)
 void Timein4Interrupt(void)
 {
 	/* --------------- was it a counter overflow event? -------------------------------- */
-	/*
-	// start debug code
-	static uint8_t cnt = 0;
-	if (cnt == 0) {
-		RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
-		GPIO_InitTypeDef  GPIO_InitStructure;
-		GPIO_InitStructure.GPIO_Pin = 1 << 6;
-		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-		GPIO_Init(GPIOB, &GPIO_InitStructure);
-		GPIOB->AFR[0] |= 0x02000000;
-		cnt = 1;
-	}
-	//duty_cycles[3][0] = (uint16_t)((0x00010000 | GPIOB->AFR[0]) >> 16);		// debug code  (just to check if peripheral bus is enabled)
-	// end debug code
-	*/
 	if(TIM_GetITStatus(TIM4, TIM_IT_Update) == SET)
   {
     /* process the event */
