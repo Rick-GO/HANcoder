@@ -82,16 +82,17 @@ typedef struct
   TIM_TypeDef * timer_peripheral;
   uint32_t timer_peripheral_clk;
   uint8_t timer_apb_number;
-  uint32_t timer_remap_cfg;
+//  uint32_t timer_remap_cfg;
   uint8_t timer_nvic_channel;
 } tTimeinModuleMapping;
 
 /**< \brief Structure type with pin mapping information. */
 typedef struct
 {
-  uint8_t peripheral_clk;
+  uint32_t peripheral_clk;
   GPIO_TypeDef* port;
-  uint16_t pin;
+  uint8_t pin_nr;		// Changed!
+  uint8_t gpio_af;		// Changed!
   uint8_t module_idx;
   uint8_t channel_idx;
   uint16_t capture_irq_flg;
@@ -113,31 +114,31 @@ static void TimeinCaptureInterrupt(uint8_t pin_id);
 /** \brief Array with all configuration parameters of a timer module. */
 const static tTimeinModuleMapping moduleMapping[] =
 {
-  { TIM1, RCC_APB2Periph_TIM1, 2, 0                   , TIM1_CC_IRQn },
-  { TIM2, RCC_APB1Periph_TIM2, 1, 0                   , TIM2_IRQn    },
-  { TIM3, RCC_APB1Periph_TIM3, 1, 0 				  , TIM3_IRQn    },
-  { TIM4, RCC_APB1Periph_TIM4, 1, 0                   , TIM4_IRQn    }
+  { TIM1, RCC_APB2Periph_TIM1, 2, TIM1_CC_IRQn },
+  { TIM2, RCC_APB1Periph_TIM2, 1, TIM2_IRQn    },
+  { TIM3, RCC_APB1Periph_TIM3, 1, TIM3_IRQn    },
+  { TIM4, RCC_APB1Periph_TIM4, 1, TIM4_IRQn    }
 };
 
 /** \brief Array with all configuration parameters of an input capture pin. */
 const static tTimeinPinMapping pinMapping[] =
 {
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_8,  TIMEIN_MODULE_TIM1, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 0:  TIMEIN_TIM1_PIN_PA8   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_9,  TIMEIN_MODULE_TIM1, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 1:  TIMEIN_TIM1_PIN_PA9   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_10, TIMEIN_MODULE_TIM1, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 2:  TIMEIN_TIM1_PIN_PA10  */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_11, TIMEIN_MODULE_TIM1, 3, TIM_IT_CC4, TIM_CCER_CC4P }, /* idx 3:  TIMEIN_TIM1_PIN_PA11  */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_0,  TIMEIN_MODULE_TIM2, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 4:  TIMEIN_TIM2_PIN_PA0   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_1,  TIMEIN_MODULE_TIM2, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 5:  TIMEIN_TIM2_PIN_PA1   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_2,  TIMEIN_MODULE_TIM2, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 6:  TIMEIN_TIM2_PIN_PA2   */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_3,  TIMEIN_MODULE_TIM2, 3, TIM_IT_CC4, TIM_CCER_CC4P }, /* idx 7:  TIMEIN_TIM2_PIN_PA3   */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_6,  TIMEIN_MODULE_TIM3, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 8:  TIMEIN_TIM3_PIN_PC6   */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_7,  TIMEIN_MODULE_TIM3, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 9:  TIMEIN_TIM3_PIN_PC7   */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_8,  TIMEIN_MODULE_TIM3, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 10: TIMEIN_TIM3_PIN_PC8   */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_9,  TIMEIN_MODULE_TIM3, 3, TIM_IT_CC4, TIM_CCER_CC4P }, /* idx 11: TIMEIN_TIM3_PIN_PC9   */
-  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_6,  TIMEIN_MODULE_TIM4, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 12: TIMEIN_TIM4_PIN_PB6   */
-  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_7,  TIMEIN_MODULE_TIM4, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 13: TIMEIN_TIM4_PIN_PB7   */
-  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_8,  TIMEIN_MODULE_TIM4, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 14: TIMEIN_TIM4_PIN_PB8   */
-  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_9,  TIMEIN_MODULE_TIM4, 3, TIM_IT_CC4, TIM_CCER_CC4P }  /* idx 15: TIMEIN_TIM4_PIN_PB9   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource8,  GPIO_AF_6,  TIMEIN_MODULE_TIM1, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 0:  TIMEIN_TIM1_PIN_PA8   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource9,  GPIO_AF_6,  TIMEIN_MODULE_TIM1, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 1:  TIMEIN_TIM1_PIN_PA9   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource10, GPIO_AF_6,  TIMEIN_MODULE_TIM1, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 2:  TIMEIN_TIM1_PIN_PA10  */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource11, GPIO_AF_11, TIMEIN_MODULE_TIM1, 3, TIM_IT_CC4, TIM_CCER_CC4P }, /* idx 3:  TIMEIN_TIM1_PIN_PA11  */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource0,  GPIO_AF_1,  TIMEIN_MODULE_TIM2, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 4:  TIMEIN_TIM2_PIN_PA0   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource1,  GPIO_AF_1,  TIMEIN_MODULE_TIM2, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 5:  TIMEIN_TIM2_PIN_PA1   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource2,  GPIO_AF_1,  TIMEIN_MODULE_TIM2, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 6:  TIMEIN_TIM2_PIN_PA2   */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_PinSource3,  GPIO_AF_1,  TIMEIN_MODULE_TIM2, 3, TIM_IT_CC4, TIM_CCER_CC4P }, /* idx 7:  TIMEIN_TIM2_PIN_PA3   */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_PinSource6,  GPIO_AF_2,  TIMEIN_MODULE_TIM3, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 8:  TIMEIN_TIM3_PIN_PC6   */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_PinSource7,  GPIO_AF_2,  TIMEIN_MODULE_TIM3, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 9:  TIMEIN_TIM3_PIN_PC7   */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_PinSource8,  GPIO_AF_2,  TIMEIN_MODULE_TIM3, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 10: TIMEIN_TIM3_PIN_PC8   */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_PinSource9,  GPIO_AF_2,  TIMEIN_MODULE_TIM3, 3, TIM_IT_CC4, TIM_CCER_CC4P }, /* idx 11: TIMEIN_TIM3_PIN_PC9   */
+  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_PinSource6,  GPIO_AF_2,  TIMEIN_MODULE_TIM4, 0, TIM_IT_CC1, TIM_CCER_CC1P }, /* idx 12: TIMEIN_TIM4_PIN_PB6   */
+  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_PinSource7,  GPIO_AF_2,  TIMEIN_MODULE_TIM4, 1, TIM_IT_CC2, TIM_CCER_CC2P }, /* idx 13: TIMEIN_TIM4_PIN_PB7   */
+  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_PinSource8,  GPIO_AF_2,  TIMEIN_MODULE_TIM4, 2, TIM_IT_CC3, TIM_CCER_CC3P }, /* idx 14: TIMEIN_TIM4_PIN_PB8   */
+  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_PinSource9,  GPIO_AF_2,  TIMEIN_MODULE_TIM4, 3, TIM_IT_CC4, TIM_CCER_CC4P }  /* idx 15: TIMEIN_TIM4_PIN_PB9   */
 };
 
 
@@ -253,7 +254,8 @@ static void TimeinInit(uint8_t module_id)
   /* timer 1 is special as it has separate IRQ channels */
   if (moduleMapping[module_id].timer_peripheral == TIM1)
   {
-    NVIC_InitStructure.NVIC_IRQChannel = TIM1_CC_IRQn;
+//    NVIC_InitStructure.NVIC_IRQChannel = TIM1_CC_IRQn;
+	NVIC_InitStructure.NVIC_IRQChannel = TIM1_UP_TIM16_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = TIMER_NVIC_IRQ_PRIO;
     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
@@ -289,8 +291,9 @@ void TimeinConfigure(uint8_t pin_id)
   GPIO_InitTypeDef  GPIO_InitStructure;
   TIM_ICInitTypeDef TIM_ICInitStructure;
 
+
   /* make sure the id is valid before using it as an array indexer */
-  if (!(pin_id < sizeof(pinMapping)/sizeof(pinMapping[0])))
+  if (!(pin_id < 16/*sizeof(pinMapping)/sizeof(pinMapping[0])*/))
   {
     ErrCodesSetError(ER_CODE_TIMEIN_INVALID_PIN, ER_PARAM_SEVERITY_CRITICAL, TRUE);
   }
@@ -310,14 +313,17 @@ void TimeinConfigure(uint8_t pin_id)
   edge_counter[pinMapping[pin_id].module_idx][pinMapping[pin_id].channel_idx] = 0;
   frequencies[pinMapping[pin_id].module_idx][pinMapping[pin_id].channel_idx] = 0;
   duty_cycles[pinMapping[pin_id].module_idx][pinMapping[pin_id].channel_idx] = 0;
+
   /* enable the port's peripheral clock */
   RCC_AHBPeriphClockCmd(pinMapping[pin_id].peripheral_clk, ENABLE);
   /* initialize the GPIO pin */
-  GPIO_InitStructure.GPIO_Pin =  pinMapping[pin_id].pin;
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+  GPIO_InitStructure.GPIO_Pin = 1 << pinMapping[pin_id].pin_nr;										// Changed
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
   GPIO_Init(pinMapping[pin_id].port, &GPIO_InitStructure);
+  GPIO_PinAFConfig(pinMapping[pin_id].port, pinMapping[pin_id].pin_nr, pinMapping[pin_id].gpio_af);	// Changed
+
   /* map port pins to timer module. note that this must be done after GPIO init */
   //if (moduleMapping[pinMapping[pin_id].module_idx].timer_remap_cfg != 0)
   //{
@@ -890,16 +896,33 @@ void Timein3Interrupt(void)
 ****************************************************************************************/
 void Timein4Interrupt(void)
 {
-  /* --------------- was it a counter overflow event? -------------------------------- */
-  if(TIM_GetITStatus(TIM4, TIM_IT_Update) == SET)
+	/* --------------- was it a counter overflow event? -------------------------------- */
+	/*
+	// start debug code
+	static uint8_t cnt = 0;
+	if (cnt == 0) {
+		RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOB, ENABLE);
+		GPIO_InitTypeDef  GPIO_InitStructure;
+		GPIO_InitStructure.GPIO_Pin = 1 << 6;
+		GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+		GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
+		GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+		GPIO_Init(GPIOB, &GPIO_InitStructure);
+		GPIOB->AFR[0] |= 0x02000000;
+		cnt = 1;
+	}
+	//duty_cycles[3][0] = (uint16_t)((0x00010000 | GPIOB->AFR[0]) >> 16);		// debug code  (just to check if peripheral bus is enabled)
+	// end debug code
+	*/
+	if(TIM_GetITStatus(TIM4, TIM_IT_Update) == SET)
   {
     /* process the event */
-    TimeinOverflowInterrupt(TIMEIN_MODULE_TIM4);
+	  TimeinOverflowInterrupt(TIMEIN_MODULE_TIM4);
   }
   else
   {
-    /* --------------- was it an input capture event for the 1st channel? -------------- */
-    if(TIM_GetITStatus(TIM4, TIM_IT_CC1) == SET)
+	  /* --------------- was it an input capture event for the 1st channel? -------------- */
+	if(TIM_GetITStatus(TIM4, TIM_IT_CC1) == SET)
     {
       /* process the event */
       TimeinCaptureInterrupt(TIMEIN_TIM4_PIN_PB6);
@@ -909,7 +932,7 @@ void Timein4Interrupt(void)
     {
       /* process the event */
       TimeinCaptureInterrupt(TIMEIN_TIM4_PIN_PB7);
-    }
+	}
     /* --------------- was it an input capture event for the 3rd channel? -------------- */
     else if(TIM_GetITStatus(TIM4, TIM_IT_CC3) == SET)
     {
