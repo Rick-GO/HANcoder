@@ -48,6 +48,10 @@
 /** \brief Invalid index value for array aninChannelCfgInfo */
 #define ANIN_INVALID_CHANNEL_IDX  (ANIN_MAX_CHANNELS)
 
+#define ADC1CHANNELS	(8)
+#define ADC2CHANNELS	(6)
+#define ADC3CHANNELS	(2)
+
 
 /****************************************************************************************
 * Type definitions
@@ -60,6 +64,7 @@ typedef struct
   uint16_t pin;
   ADC_TypeDef* adc;
   uint8_t adcChannel;
+  uint8_t adcId;
 } tAninPinMapping;
 
 /** \brief Structure type to keep track of a channel configuration. */
@@ -75,7 +80,7 @@ typedef struct
 ****************************************************************************************/
 static void    AninInit(void);
 static void    AninReinit(void);
-static uint8_t AninGetNumConfiguredChannels(void);
+static uint8_t AninGetNumConfiguredChannels(uint8_t adcId);
 static uint8_t AninGetChannelIndex(uint8_t id);
 
 
@@ -84,22 +89,22 @@ static uint8_t AninGetChannelIndex(uint8_t id);
 ****************************************************************************************/
 const static tAninPinMapping pinMapping[] =
 {
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_0, ADC1, ADC_Channel_6  }, /* 0:  ANIN_PORTC_PIN0 ADC1 CH6 */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_1, ADC1, ADC_Channel_7  }, /* 1:  ANIN_PORTC_PIN1 ADC1 CH7 */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_2, ADC1, ADC_Channel_8  }, /* 2:  ANIN_PORTC_PIN2 ADC1 CH8 */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_3, ADC1, ADC_Channel_9  }, /* 3:  ANIN_PORTC_PIN3 ADC1 CH9 */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_4, ADC2, ADC_Channel_5  }, /* 4:  ANIN_PORTC_PIN4 ADC2 CH5 */
-  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_5, ADC2, ADC_Channel_11 }, /* 5:  ANIN_PORTC_PIN5 ADC2 CH11 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_3, ADC1, ADC_Channel_4  }, /* 6:  ANIN_PORTA_PIN3 ADC1 CH4 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_2, ADC1, ADC_Channel_3  }, /* 7:  ANIN_PORTA_PIN2 ADC1 CH3 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_0, ADC1, ADC_Channel_1  }, /* 8:  ANIN_PORTA_PIN0 ADC1 CH1 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_1, ADC1, ADC_Channel_2  }, /* 9:  ANIN_PORTA_PIN1 ADC1 CH2 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_4, ADC2, ADC_Channel_1  }, /* 10: ANIN_PORTA_PIN4 ADC2 CH1 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_7, ADC2, ADC_Channel_8  }, /* 11: ANIN_PORTA_PIN7 ADC2 CH8 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_6, ADC2, ADC_Channel_7  }, /* 12: ANIN_PORTA_PIN6 ADC2 CH7 */
-  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_5, ADC2, ADC_Channel_2  }, /* 13: ANIN_PORTA_PIN5 ADC2 CH2 */
-  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_0, ADC3, ADC_Channel_12 }, /* 14: ANIN_PORTB_PIN0 ADC3 CH12 */
-  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_1, ADC3, ADC_Channel_1  }  /* 15: ANIN_PORTB_PIN1 ADC3 CH1 */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_0, ADC1, ADC_Channel_6, 0 }, /* 0:  ANIN_PORTC_PIN0 ADC1 CH6 */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_1, ADC1, ADC_Channel_7, 0 }, /* 1:  ANIN_PORTC_PIN1 ADC1 CH7 */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_2, ADC1, ADC_Channel_8, 0 }, /* 2:  ANIN_PORTC_PIN2 ADC1 CH8 */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_3, ADC1, ADC_Channel_9, 0 }, /* 3:  ANIN_PORTC_PIN3 ADC1 CH9 */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_4, ADC2, ADC_Channel_5, 1 }, /* 4:  ANIN_PORTC_PIN4 ADC2 CH5 */
+  { RCC_AHBPeriph_GPIOC, GPIOC, GPIO_Pin_5, ADC2, ADC_Channel_11,1 }, /* 5:  ANIN_PORTC_PIN5 ADC2 CH11 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_3, ADC1, ADC_Channel_4, 0 }, /* 6:  ANIN_PORTA_PIN3 ADC1 CH4 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_2, ADC1, ADC_Channel_3, 0 }, /* 7:  ANIN_PORTA_PIN2 ADC1 CH3 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_0, ADC1, ADC_Channel_1, 0 }, /* 8:  ANIN_PORTA_PIN0 ADC1 CH1 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_1, ADC1, ADC_Channel_2, 0 }, /* 9:  ANIN_PORTA_PIN1 ADC1 CH2 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_4, ADC2, ADC_Channel_1, 1 }, /* 10: ANIN_PORTA_PIN4 ADC2 CH1 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_7, ADC2, ADC_Channel_4, 1 }, /* 11: ANIN_PORTA_PIN7 ADC2 CH8 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_6, ADC2, ADC_Channel_3, 1 }, /* 12: ANIN_PORTA_PIN6 ADC2 CH7 */
+  { RCC_AHBPeriph_GPIOA, GPIOA, GPIO_Pin_5, ADC2, ADC_Channel_2, 1 }, /* 13: ANIN_PORTA_PIN5 ADC2 CH2 */
+  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_0, ADC3, ADC_Channel_12,2 }, /* 14: ANIN_PORTB_PIN0 ADC3 CH12 */
+  { RCC_AHBPeriph_GPIOB, GPIOB, GPIO_Pin_1, ADC3, ADC_Channel_1, 2 }  /* 15: ANIN_PORTB_PIN1 ADC3 CH1 */
 };
 
 
@@ -107,13 +112,16 @@ const static tAninPinMapping pinMapping[] =
 * Local data declarations
 ****************************************************************************************/
 /** \brief Array for storing the analog to digital conversion results. */
-static uint16_t aninConversionResults[ANIN_MAX_CHANNELS];
+static uint16_t aninConversionResults1[ADC1CHANNELS]; // Number of ADC1 Channels
+static uint16_t aninConversionResults2[ADC2CHANNELS]; // Number of ADC2 Channels
+static uint16_t aninConversionResults3[ADC3CHANNELS]; // Number of ADC3 Channels
 
 /** \brief Flag to determine is the driver was already initialized. */
 static uint8_t aninInitialized = FALSE;
 
 /** \brief Array to keep track of a channel's configuration. */
-static tAninChannelCfgInfo aninChannelCfgInfo[ANIN_MAX_CHANNELS];
+/*TODO better memory performance  */
+static tAninChannelCfgInfo aninChannelCfgInfo[3][ANIN_MAX_CHANNELS];
 
 /** \brief Flag to determine if the configuration was changed and requires updating. */
 static uint8_t aninConfigurationChangedFlg = FALSE;
@@ -139,24 +147,40 @@ static void AninInit(void)
   {
     /* set flag */
     aninInitialized = TRUE;
-    /* init arrays */
-    for (idx=0; idx<ANIN_MAX_CHANNELS; idx++)
+    
+	for (idx=0; idx<ADC1CHANNELS; idx++)
     {
-      aninConversionResults[idx] = 0;
-      aninChannelCfgInfo[idx].configuredFlg = FALSE;
-    }
-
+		aninConversionResults1[idx] = 0;
+		aninChannelCfgInfo[0][idx].configuredFlg = FALSE; 
+	}
+	
+	for (idx=0; idx<ADC2CHANNELS; idx++)
+    {
+		aninConversionResults2[idx] = 0;
+		aninChannelCfgInfo[1][idx].configuredFlg = FALSE; 
+	}
+	
+	for (idx=0; idx<ADC3CHANNELS; idx++)
+    {
+		aninConversionResults3[idx] = 0;
+		aninChannelCfgInfo[2][idx].configuredFlg = FALSE; 
+	}
+	
     /* enable the DMA1 clock */
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 	/* enable the DMA2 clock */
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA2, ENABLE);
-    
+
 	/* enable the ADC12 clocks */
 	RCC_ADCCLKConfig(RCC_ADC12PLLCLK_Div8);
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_ADC12, ENABLE);
 	
+	RCC_ADCCLKConfig(RCC_ADC34PLLCLK_Div8);
+    RCC_AHBPeriphClockCmd(RCC_AHBPeriph_ADC34, ENABLE);
+	
 	ADC_VoltageRegulatorCmd(ADC1, ENABLE);
 	ADC_VoltageRegulatorCmd(ADC2, ENABLE);
+	ADC_VoltageRegulatorCmd(ADC3, ENABLE);
 
 	/* TODO implement another, defined delay mechanism */
 	uint32_t counter = 0;
@@ -168,8 +192,12 @@ static void AninInit(void)
 	ADC_SelectCalibrationMode(ADC2, ADC_CalibrationMode_Single);
 	ADC_StartCalibration(ADC2);
 	
+	ADC_SelectCalibrationMode(ADC3, ADC_CalibrationMode_Single);
+	ADC_StartCalibration(ADC3);
+	
 	while(ADC_GetCalibrationStatus(ADC1) != RESET );
 	while(ADC_GetCalibrationStatus(ADC2) != RESET );
+	while(ADC_GetCalibrationStatus(ADC3) != RESET );
 
 	
     /* ADC common init */
@@ -181,6 +209,7 @@ static void AninInit(void)
 	
     ADC_CommonInit(ADC1,&ADC_CommonInitStructure);
 	ADC_CommonInit(ADC2,&ADC_CommonInitStructure);
+	ADC_CommonInit(ADC3,&ADC_CommonInitStructure);
 
   }
 } /*** end of AninInit ***/
@@ -196,18 +225,24 @@ static void AninReinit(void)
 {
   ADC_InitTypeDef ADC_InitStructure;
   DMA_InitTypeDef DMA_InitStructure;
-  uint8_t channelIdx;
-  uint8_t numChannels;
+  uint8_t channelId;
+  uint8_t adcId;
 
-  /* determine number of configured channels */
-  numChannels = AninGetNumConfiguredChannels();
-  /* DMA1 channel1 configuration to store the ADC1 conversion results as a ring buffer */
+  /* De initialize current configurations */
+  /* NOTE: De-initializations needs to be done before the new initializations! */
   DMA_DeInit(DMA1_Channel1);
- 
+  DMA_DeInit(DMA2_Channel1);
+  DMA_DeInit(DMA2_Channel5);
+  
+  ADC_DeInit(ADC1);
+  ADC_DeInit(ADC2);
+  ADC_DeInit(ADC3);
+  
+  /* Initialize ADC1 with DMA 1 Channel 1 */
   DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&(ADC1->DR);
-  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)aninConversionResults;
+  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)aninConversionResults1;
   DMA_InitStructure.DMA_DIR = DMA_DIR_PeripheralSRC;
-  DMA_InitStructure.DMA_BufferSize = numChannels;
+  DMA_InitStructure.DMA_BufferSize = AninGetNumConfiguredChannels(0);
   DMA_InitStructure.DMA_PeripheralInc = DMA_PeripheralInc_Disable;
   DMA_InitStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
   DMA_InitStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_HalfWord;
@@ -215,16 +250,8 @@ static void AninReinit(void)
   DMA_InitStructure.DMA_Mode = DMA_Mode_Circular;
   DMA_InitStructure.DMA_Priority = DMA_Priority_Medium;
   DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
-    
   DMA_Init(DMA1_Channel1, &DMA_InitStructure);
-  /* enable DMA1 channel1 */
   DMA_Cmd(DMA1_Channel1, ENABLE);
-  /* put everything back to power-on defaults */
-
-
-
-
-  ADC_DeInit(ADC1);
 
   ADC_InitStructure.ADC_ContinuousConvMode = ADC_ContinuousConvMode_Disable;
   ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
@@ -233,26 +260,60 @@ static void AninReinit(void)
   ADC_InitStructure.ADC_DataAlign = ADC_DataAlign_Right;
   ADC_InitStructure.ADC_OverrunMode = ADC_OverrunMode_Disable;
   ADC_InitStructure.ADC_AutoInjMode = ADC_AutoInjec_Disable;
-  ADC_InitStructure.ADC_NbrOfRegChannel = numChannels;
-  
+  ADC_InitStructure.ADC_NbrOfRegChannel = AninGetNumConfiguredChannels(0);
   ADC_Init(ADC1, &ADC_InitStructure);
-  /* configure the channels */
-  for (channelIdx=0; channelIdx<numChannels; channelIdx++)
+
+  /* Initialize ADC2 with DMA 2 Channel 1 */
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&(ADC2->DR);
+  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)aninConversionResults2;
+  DMA_InitStructure.DMA_BufferSize = AninGetNumConfiguredChannels(1);
+  DMA_Init(DMA2_Channel1, &DMA_InitStructure);
+  DMA_Cmd(DMA2_Channel1, ENABLE);
+
+  ADC_InitStructure.ADC_NbrOfRegChannel = AninGetNumConfiguredChannels(1);
+  ADC_Init(ADC2, &ADC_InitStructure);
+
+  /* Initialize ADC3 with DMA 2 Channel 5 */
+  DMA_InitStructure.DMA_PeripheralBaseAddr = (uint32_t)&(ADC3->DR);
+  DMA_InitStructure.DMA_MemoryBaseAddr = (uint32_t)aninConversionResults3;
+  DMA_InitStructure.DMA_BufferSize = AninGetNumConfiguredChannels(2);
+  DMA_Init(DMA2_Channel5, &DMA_InitStructure);
+  DMA_Cmd(DMA2_Channel5, ENABLE);
+
+  ADC_InitStructure.ADC_NbrOfRegChannel = AninGetNumConfiguredChannels(1);
+  ADC_Init(ADC3, &ADC_InitStructure);
+
+  /* Configure all the ADC channels */
+  for (adcId=0; adcId<3; adcId++)
   {
-    ADC_RegularChannelConfig(pinMapping[aninChannelCfgInfo[channelIdx].pinIdx].adc, 
-								pinMapping[aninChannelCfgInfo[channelIdx].pinIdx].adcChannel,
-								channelIdx+1, ADC_SampleTime_61Cycles5);
+	  for (channelId=0; channelId<AninGetNumConfiguredChannels(adcId); channelId++)
+	  {
+		ADC_RegularChannelConfig(pinMapping[aninChannelCfgInfo[adcId][channelId].pinIdx].adc, 
+								 pinMapping[aninChannelCfgInfo[adcId][channelId].pinIdx].adcChannel,
+									channelId+1, ADC_SampleTime_61Cycles5);
+	  }
   }
-  
+
+  /* Activate DMA and ADC peripherlas */
   ADC_DMAConfig(ADC1,ADC_DMAMode_OneShot);
-  /* Enable ADC1 DMA */
   ADC_DMACmd(ADC1, ENABLE);
-  /* enable ADC1 */
   ADC_Cmd(ADC1, ENABLE);
   while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_RDY));
   ADC_StartConversion(ADC1);
-  
- 
+
+
+  ADC_DMAConfig(ADC2,ADC_DMAMode_OneShot);
+  ADC_DMACmd(ADC2, ENABLE);
+  ADC_Cmd(ADC2, ENABLE);
+  while(!ADC_GetFlagStatus(ADC2, ADC_FLAG_RDY));
+  ADC_StartConversion(ADC2);
+
+
+  ADC_DMAConfig(ADC3,ADC_DMAMode_OneShot);
+  ADC_DMACmd(ADC3, ENABLE);
+  ADC_Cmd(ADC3, ENABLE);
+  while(!ADC_GetFlagStatus(ADC3, ADC_FLAG_RDY));
+  ADC_StartConversion(ADC3);
 } /*** end of AninReinit ***/
 
 
@@ -261,13 +322,13 @@ static void AninReinit(void)
 ** \return    Number of configured channels.
 **
 ****************************************************************************************/
-static uint8_t AninGetNumConfiguredChannels(void)
+static uint8_t AninGetNumConfiguredChannels(uint8_t adcId)
 {
   uint8_t count = 0;
 
   for (count=0; count<ANIN_MAX_CHANNELS; count++)
   {
-    if (aninChannelCfgInfo[count].configuredFlg == FALSE)
+    if (aninChannelCfgInfo[adcId][count].configuredFlg == FALSE)
     {
       break;
     }
@@ -288,13 +349,14 @@ static uint8_t AninGetChannelIndex(uint8_t id)
 {
   uint8_t count;
   uint8_t channelIdx = ANIN_INVALID_CHANNEL_IDX;
+  uint8_t adcId = pinMapping[id].adcId;
 
   /* iterate through the array */
   for (count=0; count<ANIN_MAX_CHANNELS; count++)
   {
     /* is this the one we are looking for? */
-    if ( (aninChannelCfgInfo[count].configuredFlg == TRUE) &&
-         (aninChannelCfgInfo[count].pinIdx == id) )
+    if ( (aninChannelCfgInfo[adcId][count].configuredFlg == TRUE) &&
+         (aninChannelCfgInfo[adcId][count].pinIdx == id) )
     {
       /* store it and stop searching */
       channelIdx = count;
@@ -315,7 +377,8 @@ static uint8_t AninGetChannelIndex(uint8_t id)
 void AninConfigure(uint8_t id, uint8_t filtered)
 {
   GPIO_InitTypeDef gpio_init;
-  uint8_t nextFreeChannelIdx;
+  uint8_t nextFreeChannelIdx[3];
+  uint8_t adcId = pinMapping[id].adcId;
 
   /* make sure the id is valid before using it as an array indexer */
   if (!(id < sizeof(pinMapping)/sizeof(pinMapping[0])))
@@ -337,15 +400,16 @@ void AninConfigure(uint8_t id, uint8_t filtered)
     /* initialize the pin */
     GPIO_Init(pinMapping[id].port, &gpio_init);
     /* determine next free channel index */
-    nextFreeChannelIdx = AninGetNumConfiguredChannels();
+    nextFreeChannelIdx[adcId] = AninGetNumConfiguredChannels(adcId);
     /* make sure there is still a free spot in the results array */
-    if (!(nextFreeChannelIdx < ANIN_MAX_CHANNELS))
+	/*TODO ADC channel specific check (*/
+    if (!(nextFreeChannelIdx[adcId] < ANIN_MAX_CHANNELS))
     {
       ErrCodesSetError(ER_CODE_ANIN_NO_FREE_CHANNELS, ER_PARAM_SEVERITY_CRITICAL, TRUE);
     }
     /* store what pin identifier belongs to the newly configured channel */
-    aninChannelCfgInfo[nextFreeChannelIdx].pinIdx = id;
-    aninChannelCfgInfo[nextFreeChannelIdx].configuredFlg = TRUE;
+    aninChannelCfgInfo[adcId][nextFreeChannelIdx[adcId]].pinIdx = id;
+    aninChannelCfgInfo[adcId][nextFreeChannelIdx[adcId]].configuredFlg = TRUE;
     /* request processing of the configuration change */
     aninConfigurationChangedFlg = TRUE;
   }
@@ -362,6 +426,7 @@ uint16_t AninGet(uint8_t id, uint8_t filtered)
 {
   uint8_t channelIdx;
   uint16_t result = 0;
+  uint8_t adcId = pinMapping[id].adcId;
 
   /* make sure the id is valid before using it as an array indexer */
   if (!(id < sizeof(pinMapping)/sizeof(pinMapping[0])))
@@ -380,7 +445,18 @@ uint16_t AninGet(uint8_t id, uint8_t filtered)
     if (channelIdx != ANIN_INVALID_CHANNEL_IDX)
     {
       /* read from the results array where the conversion result was stored by the DMA */
-      result = aninConversionResults[channelIdx];
+	  if(adcId == 0)
+	  {
+      result = aninConversionResults1[channelIdx];
+	  }
+	  else if(adcId == 1)
+	  {
+	  result = aninConversionResults2[channelIdx];
+	  }
+	  else if(adcId == 2)
+	  {
+	  result = aninConversionResults3[channelIdx];
+	  }
     }
   }
   /* return the result */
@@ -411,6 +487,8 @@ void AninConvert(void)
     }
     /* start the conversion */
     ADC_StartConversion(ADC1);
+	ADC_StartConversion(ADC2);
+	ADC_StartConversion(ADC3);
   }
 } /*** end of AninConvert ***/
 
