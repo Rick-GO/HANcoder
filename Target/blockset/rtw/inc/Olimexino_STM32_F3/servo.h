@@ -41,7 +41,7 @@ Include files
 ****************************************************************************************/
 #define SERVO_TIM1_PIN_PA8 (0)
 #define SERVO_TIM1_PIN_PA9 (1)
-#define SERVO_TIM1_PIN_PA1 (2)
+#define SERVO_TIM1_PIN_PA10 (2)    // Changed (orignally it was defined as: SERVO_TIM1_PIN_PA10 (2)
 #define SERVO_TIM2_PIN_PA0 (3)
 #define SERVO_TIM2_PIN_PA1 (4)
 #define SERVO_TIM2_PIN_PA3 (5)
