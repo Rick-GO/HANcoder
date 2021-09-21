@@ -67,7 +67,22 @@ switch Interface
     case 'Ethernet'
         cmdCommand = strcat(MircoBootPath, ' -iopenblt_net.dll ', ModelPath, ' &');
 end
-
-system(cmdCommand);
-
+status = system(cmdCommand);
+  % In case upload to Olimexino F3 target didn't succeed
+  if(status == 1 && strcmp(Interface,'USB-F3'))
+  FlashTargetRetry(CubeProgrammerPath,ModelPath);
+  end
 end % end of function FlashSTM32Target()
+
+%% A function that ask user if the target is connected and in bootloader mode
+function FlashTargetRetry(CubeProgrammerPath,ModelPath)
+action = questdlg({'Olimexino F3 not found. Is your target connected and in bootloader mode?',...
+'Connect Olimexino F3 and bring target in bootloader mode and retry.'},'HANcoder upload error','Retry','Cancel','Retry');
+  if (strcmp(action,'Retry'))
+  cmdCommand = strcat(CubeProgrammerPath, ' -c port=usb1 -e all -w ', ModelPath, ' --go 0x08000000');
+  system(cmdCommand);
+  else
+  disp('### Automatic flash procedure canceled by user');
+  end
+end % end of function FlashTargetRetry()
+%% end of file
