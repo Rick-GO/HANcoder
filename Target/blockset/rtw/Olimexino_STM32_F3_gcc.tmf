@@ -203,8 +203,6 @@ HANcoder_INCLUDES = \
 	-I$(SRC_PATH)/../third_party/STM32F30x_StdPeriph_Driver/src \
 	-I$(SRC_PATH)/Olimexino_STM32_F3
 
-#	-I$(INC_PATH)/../third_party/CMSIS/CM3/CoreSupport \
-#	-I$(SRC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM3 \
 # Additional includes
 ADD_INCLUDES = \
 |>START_EXPAND_INCLUDES<|	-I"|>EXPAND_DIR_NAME<|" \
