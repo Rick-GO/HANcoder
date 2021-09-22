@@ -183,9 +183,10 @@ HANcoder_INCLUDES = \
 	-I$(INC_PATH) \
 	-I$(INC_PATH)/../third_party/fatfs \
 	-I$(INC_PATH)/../third_party/freertos/Source/include \
+	-I$(INC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM4F \
 	-I$(INC_PATH)/../third_party/canopennode \
-	-I$(INC_PATH)/../third_party/CMSIS/CM3/CoreSupport \
 	-I$(INC_PATH)/../third_party/CMSIS/Device/ST/STM32F3xx/Include \
+	-I$(INC_PATH)/../third_party/CMSIS/Include \
 	-I$(INC_PATH)/../third_party/STM32_USB-FS-Device_Driver/inc \
 	-I$(INC_PATH)/../third_party/STM32F30x_StdPeriph_Driver/inc \
 	-I$(INC_PATH)/Olimexino_STM32_F3 \
@@ -196,12 +197,14 @@ HANcoder_INCLUDES = \
 	-I$(SRC_PATH)/../third_party/fatfs \
 	-I$(SRC_PATH)/../third_party/fatfs/option \
 	-I$(SRC_PATH)/../third_party/freertos/Source \
-	-I$(SRC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM3 \
+	-I$(SRC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM4F \
 	-I$(SRC_PATH)/../third_party/freertos/Source/portable/MemMang \
 	-I$(SRC_PATH)/../third_party/STM32_USB-FS-Device_Driver/src \
 	-I$(SRC_PATH)/../third_party/STM32F30x_StdPeriph_Driver/src \
 	-I$(SRC_PATH)/Olimexino_STM32_F3
 
+#	-I$(INC_PATH)/../third_party/CMSIS/CM3/CoreSupport \
+#	-I$(SRC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM3 \
 # Additional includes
 ADD_INCLUDES = \
 |>START_EXPAND_INCLUDES<|	-I"|>EXPAND_DIR_NAME<|" \
@@ -248,6 +251,7 @@ CC_FLAGS        += -fsingle-precision-constant -mcpu=cortex-m4 -mthumb -mfloat-a
 CC_FLAGS        += -Wno-maybe-uninitialized -Wno-unused-but-set-variable -Wno-format -Wno-address -Wno-array-bounds
 CC_FLAGS        += -Wno-strict-aliasing -Wno-overflow #TODO check this warning
 
+
 ifeq ($(HANcoder_BOOTLOADER),1)
 CC_FLAGS        += -DHANcoder_BOOTLOADER=1
 endif
@@ -286,7 +290,7 @@ LIBS += $(EXT_LIB) $(S_FUNCTIONS_LIB)
 #|---------------------------------------------------------------------------------------
 HANcoder_LIB_SRCS = \
   timeout.c XcpStack.c app.c anin.c can.c canio.c digin.c digout.c cstart.c os.c \
-  croutine.c list.c queue.c tasks.c timers.c port.c heap_4.c core_cm3.c \
+  croutine.c list.c queue.c tasks.c timers.c port.c heap_4.c \
   system_stm32f30x.c misc.c stm32f30x_adc.c stm32f30x_can.c stm32f30x_comp.c stm32f30x_crc.c \
   stm32f30x_dac.c stm32f30x_dbgmcu.c stm32f30x_dma.c stm32f30x_exti.c stm32f30x_opamp.c\
   stm32f30x_flash.c stm32f30x_gpio.c stm32f30x_i2c.c stm32f30x_iwdg.c stm32f30x_misc.c  \
@@ -374,10 +378,6 @@ $(BIN_PATH)/$(MODEL_NAME).elf: clean $(OBJS) $(LIBS) $(SHARED_LIB) $(SRC_DEP) $(
 	@echo ### Compiling $(notdir $<) -o $(notdir $@)
 	@$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDES)
 
-%.obj : $(SRC_PATH)/../third_party/CMSIS/CM3/CoreSupport/%.c
-	@echo ### Compiling $(notdir $<) -o $(notdir $@)
-	@$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDES)
-
 %.obj : $(SRC_PATH)/../third_party/fatfs/%.c
 	@echo ### Compiling $(notdir $<) -o $(notdir $@)
 	@$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDES)
@@ -390,7 +390,7 @@ $(BIN_PATH)/$(MODEL_NAME).elf: clean $(OBJS) $(LIBS) $(SHARED_LIB) $(SRC_DEP) $(
 	@echo ### Compiling $(notdir $<) -o $(notdir $@)
 	@$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDES)
 
-%.obj : $(SRC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM3/%.c
+%.obj : $(SRC_PATH)/../third_party/freertos/Source/portable/GCC/ARM_CM4F/%.c
 	@echo ### Compiling $(notdir $<) -o $(notdir $@)
 	@$(CC) -c -o $@ $< $(CC_FLAGS) $(CC_INCLUDES)
 
